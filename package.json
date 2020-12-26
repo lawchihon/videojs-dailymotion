@@ -1,0 +1,45 @@
+{
+  "name": "@lawchihon/videojs-dailymotion",
+  "description": "Dailymotion playback technology for Video.js",
+  "version": "0.0.1",
+  "author": "John Law  <chihonlaw@gmail.com>",
+  "main": "dist/Dailymotion.js",
+  "license": "MIT",
+  "keywords": [
+    "video",
+    "videojs",
+    "video.js",
+    "vjs",
+    "Dailymotion",
+    "tech"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lawchihon/videojs-dailymotion.git"
+  },
+  "peerDependencies": {
+    "video.js": "5.x || 6.x || 7.x"
+  },
+  "scripts": {
+    "build": "mkdirp dist && cp src/Dailymotion.js dist/Dailymotion.js && uglifyjs src/Dailymotion.js -o dist/Dailymotion.min.js",
+    "lint": "jshint .",
+    "test": "npm run build && karma start --single-run",
+    "validate": "npm ls",
+    "version": "npm run build && git add -f dist"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "devDependencies": {
+    "http-server": "^0.10.0",
+    "jasmine-core": "^2.3.4",
+    "jshint": "^2.8.0",
+    "karma": "^1.3.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.0.2",
+    "mkdirp": "^0.5.1",
+    "precommit-hook": "^3.0.0",
+    "uglify-js": "^3.4.6",
+    "video.js": "^5.6.0 || ^6.2.8 || ^7.0.2"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@lawchihon/videojs-dailymotion",
+  "version": "0.0.1",
+  "homepage": "https://github.com/lawchihon/videojs-dailymotion",
+  "authors": [
+    "John Law <chihonlaw@gmail.com>"
+  ],
+  "description": "Dailymotion playback technology for Video.js",
+  "main": "dist/Dailymotion.min.js",
+  "license": "MIT",
+  "keywords": [
+    "video",
+    "videojs",
+    "video.js",
+    "vjs",
+    "Dailymotion",
+    "tech"
+  ],
+  "ignore": [
+    ".npmignore",
+    ".gitignore",
+    ".jshintrc",
+    ".jshintignore",
+    "src",
+    "tests",
+    "karma.conf.js"
+  ],
+  "dependencies": {
+    "video.js": "^5.0.0"
+  }
+}
