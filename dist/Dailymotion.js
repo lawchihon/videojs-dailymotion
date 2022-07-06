@@ -62,10 +62,11 @@
       'ui-start-screen-info', 'ui-theme', 'apimode', 'playlist'];
       var options = this.options_;
       params.forEach(function(param) {
-        if (typeof options[param] === 'undefined') {
-          return;
+        if (param === 'mute') {
+          playerParams[param] = options['muted'];
+        } else if (typeof options[param] !== 'undefined') {
+          playerParams[param] = options[param];
         }
-        playerParams[param] = options[param];
       });
 
       if (typeof this.options_.dmControls !== 'undefined') {
