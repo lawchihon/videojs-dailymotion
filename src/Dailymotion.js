@@ -522,7 +522,6 @@
 
   function injectCss() {
     var css = // iframe blocker to catch mouse events
-      '.vjs-dailymotion .vjs-iframe-blocker { display: none; }' +
       '.vjs-dailymotion.vjs-user-inactive .vjs-iframe-blocker { display: block; }' +
       '.vjs-dailymotion .vjs-poster { background-size: cover; }' +
       '.vjs-dailymotion-mobile .vjs-big-play-button { display: none; }';
