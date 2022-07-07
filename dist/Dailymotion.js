@@ -182,16 +182,16 @@
       divWrapper.appendChild(div);
 
       if (!_isOnMobile && !this.options_.dmControls) {
-        // var divBlocker = document.createElement('div');
-        // divBlocker.setAttribute('class', 'vjs-iframe-blocker');
-        // divBlocker.setAttribute('style', 'position:absolute;top:0;left:0;width:100%;height:100%');
-        //
-        // // In case the blocker is still there and we want to pause
-        // divBlocker.onclick = function() {
-        //   this.pause();
-        // }.bind(this);
-        //
-        // divWrapper.appendChild(divBlocker);
+        var divBlocker = document.createElement('div');
+        divBlocker.setAttribute('class', 'vjs-iframe-blocker');
+        divBlocker.setAttribute('style', 'position:absolute;top:0;left:0;width:100%;height:100%');
+
+        // In case the blocker is still there and we want to pause
+        divBlocker.onclick = function() {
+          this.pause();
+        }.bind(this);
+
+        divWrapper.appendChild(divBlocker);
       }
 
       return divWrapper;
