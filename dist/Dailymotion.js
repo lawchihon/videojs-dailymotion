@@ -310,7 +310,7 @@
 
     setMuted: function(mute) {
       if (typeof mute === 'undefined' || !this.dmPlayer || !this.dmPlayer.setMuted) {
-        return;
+        return this.dmPlayer.muted;
       }
 
       if (mute) {
