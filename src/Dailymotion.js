@@ -58,8 +58,8 @@
       // To use Dailymotion controls, you must use dmControls instead
 
       var params = ['api', 'autoplay', 'autoplay-mute', 'id', 'mute', 'origin', 'quality', 'queue-autoplay-next',
-      'queue-enable', 'sharing-enable', 'start', 'subtitles-default', 'syndication', 'ui-highlight', 'ui-logo',
-      'ui-start-screen-info', 'ui-theme', 'apimode', 'playlist'];
+        'queue-enable', 'sharing-enable', 'start', 'subtitles-default', 'syndication', 'ui-highlight', 'ui-logo',
+        'ui-start-screen-info', 'ui-theme', 'apimode', 'playlist'];
       var options = this.options_;
       params.forEach(function(param) {
         if (param === 'mute') {
@@ -301,29 +301,16 @@
       return undefined;
     },
 
-    muted: function(muted) {
-      if (typeof muted !== undefined) {
-        return this.setMuted(muted);
-      }
-      return this.dmPlayer && this.dmPlayer.mute;
+    muted: function() {
+      return this.dmPlayer ? this.dmPlayer.muted : false;
     },
 
     setMuted: function(mute) {
-      if (typeof mute === 'undefined' || !this.dmPlayer || !this.dmPlayer.setMuted) {
-        return this.dmPlayer.muted;
+      if (!this.dmPlayer) {
+        return;
       }
 
-      if (mute) {
-        this.volumeBeforeMute = this.volume();
-        this.setVolume(0);
-      } else {
-        this.setVolume(this.volumeBeforeMute);
-      }
       this.dmPlayer.setMuted(mute);
-      // var vm = this;
-      // setTimeout( function(){
-      //   vm.trigger('volumechange');
-      // }, 50);
     },
 
     networkState: function () {
@@ -337,11 +324,9 @@
     },
 
     pause: function() {
-      if (!this.dmPlayer || !this.dmPlayer.pause) {
-        return;
+      if (this.dmPlayer) {
+        this.dmPlayer.pause();
       }
-
-      return this.dmPlayer.pause();
     },
 
     paused: function() {
@@ -445,11 +430,10 @@
     },
 
     setVolume: function(percentAsDecimal) {
-      if (!this.dmPlayer || !this.dmPlayer.setMuted || !this.dmPlayer.setVolume) {
+      if (!this.dmPlayer) {
         return;
       }
 
-      this.dmPlayer.setMuted(false);
       this.dmPlayer.setVolume(percentAsDecimal);
     },
 
