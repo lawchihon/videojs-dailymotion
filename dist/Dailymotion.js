@@ -58,14 +58,15 @@
       // To use Dailymotion controls, you must use dmControls instead
 
       var params = ['api', 'autoplay', 'autoplay-mute', 'id', 'mute', 'origin', 'quality', 'queue-autoplay-next',
-      'queue-enable', 'sharing-enable', 'start', 'subtitles-default', 'syndication', 'ui-highlight', 'ui-logo',
-      'ui-start-screen-info', 'ui-theme', 'apimode', 'playlist'];
+        'queue-enable', 'sharing-enable', 'start', 'subtitles-default', 'syndication', 'ui-highlight', 'ui-logo',
+        'ui-start-screen-info', 'ui-theme', 'apimode', 'playlist'];
       var options = this.options_;
       params.forEach(function(param) {
-        if (typeof options[param] === 'undefined') {
-          return;
+        if (param === 'mute') {
+          playerParams[param] = options['muted'];
+        } else if (typeof options[param] !== 'undefined') {
+          playerParams[param] = options[param];
         }
-        playerParams[param] = options[param];
       });
 
       if (typeof this.options_.dmControls !== 'undefined') {
@@ -108,9 +109,12 @@
       if (this.dmPlayer) {
         return;
       }
+
+      let config = this._getPlayerConfig()
+
       this.dmPlayer = new DM.player(
         document.getElementById(this.options_.techId),
-        this._getPlayerConfig()
+        config
       );
       var vm = this;
       this.isApiReady = false;
@@ -181,16 +185,16 @@
       divWrapper.appendChild(div);
 
       if (!_isOnMobile && !this.options_.dmControls) {
-        // var divBlocker = document.createElement('div');
-        // divBlocker.setAttribute('class', 'vjs-iframe-blocker');
-        // divBlocker.setAttribute('style', 'position:absolute;top:0;left:0;width:100%;height:100%');
-        //
-        // // In case the blocker is still there and we want to pause
-        // divBlocker.onclick = function() {
-        //   this.pause();
-        // }.bind(this);
-        //
-        // divWrapper.appendChild(divBlocker);
+        var divBlocker = document.createElement('div');
+        divBlocker.setAttribute('class', 'vjs-iframe-blocker');
+        divBlocker.setAttribute('style', 'position:absolute;top:0;left:0;width:100%;height:100%');
+
+        // In case the blocker is still there and we want to pause
+        divBlocker.onclick = function() {
+          this.pause();
+        }.bind(this);
+
+        divWrapper.appendChild(divBlocker);
       }
 
       return divWrapper;
@@ -300,29 +304,16 @@
       return undefined;
     },
 
-    muted: function(muted) {
-      if (typeof muted !== undefined) {
-        return this.setMuted(muted);
-      }
-      return this.dmPlayer && this.dmPlayer.mute;
+    muted: function() {
+      return this.dmPlayer ? this.dmPlayer.muted : false;
     },
 
     setMuted: function(mute) {
-      if (typeof mute === 'undefined' || !this.dmPlayer || !this.dmPlayer.setMuted) {
+      if (!this.dmPlayer) {
         return;
       }
 
-      if (mute) {
-        this.volumeBeforeMute = this.volume();
-        this.setVolume(0);
-      } else {
-        this.setVolume(this.volumeBeforeMute);
-      }
       this.dmPlayer.setMuted(mute);
-      // var vm = this;
-      // setTimeout( function(){
-      //   vm.trigger('volumechange');
-      // }, 50);
     },
 
     networkState: function () {
@@ -336,11 +327,9 @@
     },
 
     pause: function() {
-      if (!this.dmPlayer || !this.dmPlayer.pause) {
-        return;
+      if (this.dmPlayer) {
+        this.dmPlayer.pause();
       }
-
-      return this.dmPlayer.pause();
     },
 
     paused: function() {
@@ -444,11 +433,10 @@
     },
 
     setVolume: function(percentAsDecimal) {
-      if (!this.dmPlayer || !this.dmPlayer.setMuted || !this.dmPlayer.setVolume) {
+      if (!this.dmPlayer) {
         return;
       }
 
-      this.dmPlayer.setMuted(false);
       this.dmPlayer.setVolume(percentAsDecimal);
     },
 
@@ -521,7 +509,6 @@
 
   function injectCss() {
     var css = // iframe blocker to catch mouse events
-      '.vjs-dailymotion .vjs-iframe-blocker { display: none; }' +
       '.vjs-dailymotion.vjs-user-inactive .vjs-iframe-blocker { display: block; }' +
       '.vjs-dailymotion .vjs-poster { background-size: cover; }' +
       '.vjs-dailymotion-mobile .vjs-big-play-button { display: none; }';
